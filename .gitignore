@@ -1,0 +1,13 @@
+Library/
+Temp/
+.vs/
+
+*.csproj
+*.sln
+
+!*.dll
+!*.pdb
+!*.obj
+obj/
+Assets/ProBuilder Data/ProBuilderPreferences.asset
+Logs/
