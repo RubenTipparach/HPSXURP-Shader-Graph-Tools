@@ -1,4 +1,4 @@
-# HPSX-URP Shader Tools
+# HPSX-URP Shader Graph Tools
 This repo is created to help fill the missing gap for URP supported Post Processing and Shader Graph based PSX rendering tools.
 
 This tool set was made possible by code from the URP PSX repo and the LWRP PS1 shaders repo.
