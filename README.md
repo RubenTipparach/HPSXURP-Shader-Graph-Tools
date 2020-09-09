@@ -10,7 +10,7 @@ https://github.com/BroMandarin/unity_lwrp_psx_shader
 There are major modifications made to the Dithering (which did not seem right to me in the original URP volume toolset) and the LWRP PS1 shaders were updated to URP.
 
 Some PSX elements can be exagerated using the shader graph. Currently shadergraph is still WIP.
-![train](iliketrains.png)
+![train](train.gif)
 
 ### Current Features
 - Basic Dithering + custom scaling
