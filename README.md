@@ -12,7 +12,15 @@ There are major modifications made to the Dithering (which did not seem right to
 Some PSX elements can be exagerated using the shader graph. Currently shadergraph is still WIP.
 ![train](iliketrains.png)
 
-Planned features:
+### Current Features
+- Basic Dithering + custom scaling
+- Resolution scaling
+- Can use any shader graph shaders, URP lighting, global fog, URP Volume effects
+- Vertex jitter (and reslotion control)
+- Texture scaling + point filtering
+- Emmisive textures + HDR (works with bloom)
+
+### Planned features
 - texture affinity
 - static render shader mode
 - more dithering matrices
