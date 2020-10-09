@@ -1,4 +1,7 @@
 # HPSX-URP Shader Graph Tools
+
+Currently works with Unity 2019.4 LTS versions
+
 This repo is created to help fill the missing gap for URP supported Post Processing and Shader Graph based PSX rendering tools.
 
 This tool set was made possible by code from the URP PSX repo and the LWRP PS1 shaders repo.
