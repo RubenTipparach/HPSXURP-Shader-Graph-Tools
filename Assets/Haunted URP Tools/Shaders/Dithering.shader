@@ -16,6 +16,14 @@
         float _DitherThreshold;
         float _DitherStrength;
         float _DitherScale;
+
+        // set via script!
+        uniform float iMatrix4x4[16];
+        uniform float _Intensity;
+        uniform uint _DownscaleFactor;
+        uniform int levels;
+        uniform float4 pn_bitsPerChannel;
+
         
         struct appdata
         {
@@ -149,16 +157,25 @@
             return tab[x % 4][y % 4] / 4;
         }
 
+        float4 Dither(float3 color, float levels, float limit)
+        {
+            limit = limit * 2.0 - 1.0;
+            float4 colora = float4(color, 1.0);
+            return float4(colora.rgb + limit / (levels - 1.0), colora.a);
+        }
+
         float4 Frag (v2f i) : SV_Target
         {
-            //base texture 
+            //base texture
+            // todo: downscale this texture...
             float4 c = tex2D(_MainTex, i.uv);
             
             //dithering  
             float4 texelSize = GetTexelSize(1,1);
             float2 screenPos = i.screenPosition.xy / i.screenPosition.w;
             //uint2 ditherCoordinate = screenPos * _ScreenParams.xy * texelSize.xy;
-
+            float3 offset = (1.0f / pn_bitsPerChannel) * 255.0f;
+            offset = ceil(offset) / floor(offset);
             int2 puv = i.uv * _ScreenParams.xy / _DitherScale;
 
             // Resolution scale
@@ -169,26 +186,47 @@
                 i.uv.y = floorToNearest(i.uv.y, units.y * _DitherScale);
             }
 
+            i.uv.x *= (_ScreenParams.x / _DownscaleFactor);
+            i.uv.y *= (_ScreenParams.y / _DownscaleFactor);
+
             //ditherCoordinate /= _DitherScale;
             
             float brightness = PixelBrightness(c.rgb);
+            uint width  = 4;
+            uint height = 4;
+            uint size = width * height;
+
+            uint x = i.uv.x % width;
+            uint y = i.uv.y % height;
+            int index = width * y + x;
+
+            float limit = 0;
+            limit = iMatrix4x4[index] / size;
+
   /*          float4x4 ditherPattern = GetDitherPattern(_PatternIndex);
             float ditherPixel = Get4x4TexValue(ditherCoordinate.xy, brightness, ditherPattern) * _DitherStrength / 3;;
             */
-
+/*
             fixed ditherAmount = dither_sample(puv.x, puv.y) * _DitherStrength / 3;
 
             fixed luminosity = getLuminosity(c);
             ditherAmount *= 4 * luminosity - 4 * luminosity * luminosity;
             c += ditherAmount;
             c = saturate(c);
+*/
+            c = Dither(c / pn_bitsPerChannel, levels, limit);
 
             //c -= 0.01;
             //c = saturate(c);
 
-            c.r = roundToNearest(c.r, 1. / (pow(2, 8) - 1));
-            c.g = roundToNearest(c.g, 1. / (pow(2, 8) - 1));
-            c.b = roundToNearest(c.b, 1. / (pow(2, 8) - 1));
+
+            c.a = 1.0; // Set alpha to 1.
+
+            // I have a hard time this is a different dev, looks like similar code ;)
+            //c.rgb = (floor(c * 255.0f) / 255.0f) * offset;
+            //c.rgb *= pn_bitsPerChannel;
+            c.rgb = (floor(c * 255.0f) / 255.0f) * offset;
+            c.rgb *= pn_bitsPerChannel;
 
             return c;
         }

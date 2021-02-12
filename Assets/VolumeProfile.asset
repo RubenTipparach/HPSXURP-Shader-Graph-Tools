@@ -372,13 +372,43 @@ MonoBehaviour:
     m_Value: 2
   ditherThreshold:
     m_OverrideState: 1
-    m_Value: 0.95
+    m_Value: 0.29
   ditherStrength:
     m_OverrideState: 1
-    m_Value: 0.24
+    m_Value: 0.81
   ditherScale:
     m_OverrideState: 1
+    m_Value: 15.04
+  rBitDepth:
+    m_OverrideState: 1
     m_Value: 4
+    min: 1
+    max: 8
+  gBitDepth:
+    m_OverrideState: 1
+    m_Value: 4
+    min: 1
+    max: 8
+  bBitDepth:
+    m_OverrideState: 1
+    m_Value: 4
+    min: 1
+    max: 8
+  ditherSeparation:
+    m_OverrideState: 1
+    m_Value: 1261
+    min: 1
+    max: 4096
+  intensity:
+    m_OverrideState: 1
+    m_Value: 0.51
+    min: 0
+    max: 1
+  downscaleFactor:
+    m_OverrideState: 1
+    m_Value: 1
+    min: 1
+    max: 8
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
