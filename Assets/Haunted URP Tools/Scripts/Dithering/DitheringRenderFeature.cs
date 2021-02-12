@@ -104,7 +104,7 @@ namespace PSX
             cmd.Blit(source, destination);
             cmd.Blit(destination, source, this.ditheringMaterial, shaderPass);
 
-            var RTs = GetRTs(cameraData.camera);
+            //var RTs = GetRTs(cameraData.camera);
 
 
             //depth and bayer size parameters
