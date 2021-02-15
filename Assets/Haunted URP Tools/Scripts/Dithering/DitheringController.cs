@@ -32,6 +32,9 @@ namespace PSX
 
         protected int downscaleFactor = 4;
 
+        [SerializeField] protected float widthPixelation = 512;
+        [SerializeField] protected float heightPixelation = 256;
+        [SerializeField] protected float colorPrecision = 16;
 
         protected void Update()
         {
@@ -57,6 +60,11 @@ namespace PSX
             this.dithering.intensity.value = this.intensity;
             this.dithering.downscaleFactor.value = this.downscaleFactor;
 
+
+            //ACCESSING PARAMS 
+            this.dithering.widthPixelation.value = this.widthPixelation;
+            this.dithering.heightPixelation.value = this.heightPixelation;
+            this.dithering.colorPrecision.value = this.colorPrecision;
         }
     }
 }

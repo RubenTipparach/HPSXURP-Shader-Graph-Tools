@@ -24,7 +24,13 @@
         uniform int levels;
         uniform float4 pn_bitsPerChannel;
 
+        //for Pixelation      
+        float _WidthPixelation;
+        float _HeightPixelation;
         
+        //for color precision
+        float _ColorPrecision;
+
         struct appdata
         {
             float4 vertex : POSITION;
@@ -38,63 +44,7 @@
             float4 screenPosition : TEXCOORD1;
         };
         
-        float4x4 GetDitherPattern(uint index)
-        {
-            float4x4 pattern;
-      
-            if(index == 0)
-            {
-                pattern = float4x4
-                (
-                    0 , 1 , 0 , 1 ,
-                    1 , 0 , 1 , 0 ,
-                    0 , 1 , 0 , 1 ,
-                    1 , 0 , 1 , 0 
-                );
-            }         
-            else if(index == 1)
-            {
-                pattern = float4x4
-                (
-                    0.23 , 0.2 , 0.6 , 0.2 ,
-                    0.2 , 0.43 , 0.2 , 0.77,
-                    0.88 , 0.2 , 0.87 , 0.2 ,
-                    0.2 , 0.46 , 0.2 , 0 
-                );
-            }           
-            else if(index == 2)
-            {
-                pattern = float4x4
-                (
-                     -4.0, 0.0, -3.0, 1.0,
-                     2.0, -2.0, 3.0, -1.0,
-                     -3.0, 1.0, -4.0, 0.0,
-                     3.0, -1.0, 2.0, -2.0
-                );
-            }       
-            else if(index == 3)
-            {
-                pattern = float4x4
-                (
-                    1 , 0 , 0 , 1 ,
-                    0 , 1 , 1 , 0 ,
-                    0 , 1 , 1 , 0 ,
-                    1 , 0 , 0 , 1 
-                );
-            }          
-            else 
-            {
-                pattern = float4x4
-                (
-                    1 , 1 , 1 , 1 ,
-                    1 , 1 , 1 , 1 ,
-                    1 , 1 , 1 , 1 ,
-                    1 , 1 , 1 , 1 
-                );
-            }
-            
-            return pattern;
-        }
+        
         
         float PixelBrightness(float3 col)
         {
@@ -168,8 +118,18 @@
         {
             //base texture
             // todo: downscale this texture...
-            float4 c = tex2D(_MainTex, i.uv);
-            
+            // pixelation 
+            float2 uv = i.uv;
+            //uv.x = floor(uv.x * _WidthPixelation) / _WidthPixelation;
+            //uv.y = floor(uv.y * _HeightPixelation) / _HeightPixelation;
+            uv.x = floor(uv.x * _WidthPixelation) / _WidthPixelation;
+            uv.y = floor(uv.y * _HeightPixelation) / _HeightPixelation;
+
+            float4 c = tex2D(_MainTex, uv);
+
+            //c = floor(c * _ColorPrecision)/_ColorPrecision;
+
+
             //dithering  
             float4 texelSize = GetTexelSize(1,1);
             float2 screenPos = i.screenPosition.xy / i.screenPosition.w;

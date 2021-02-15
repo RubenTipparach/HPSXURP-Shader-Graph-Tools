@@ -37,10 +37,15 @@ namespace PSX
         static readonly int DitherStrength = Shader.PropertyToID("_DitherStrength");
         static readonly int DitherScale = Shader.PropertyToID("_DitherScale");
 
+
+        //pixelation PROPERTIES
+        static readonly int WidthPixelation = Shader.PropertyToID("_WidthPixelation");
+        static readonly int HeightPixelation = Shader.PropertyToID("_HeightPixelation");
+        static readonly int ColorPrecison = Shader.PropertyToID("_ColorPrecision");
+
         Dithering dithering;
         Material ditheringMaterial;
         RenderTargetIdentifier currentTarget;
-        Dictionary<int, RTStorage> rtStorage;
 
         public DitheringPass(RenderPassEvent evt)
         {
@@ -98,6 +103,10 @@ namespace PSX
             this.ditheringMaterial.SetFloat(DitherStrength, this.dithering.ditherStrength.value);
             this.ditheringMaterial.SetFloat(DitherScale, this.dithering.ditherScale.value);
 
+            this.ditheringMaterial.SetFloat(WidthPixelation, this.dithering.widthPixelation.value);
+            this.ditheringMaterial.SetFloat(HeightPixelation, this.dithering.heightPixelation.value);
+            this.ditheringMaterial.SetFloat(ColorPrecison, this.dithering.colorPrecision.value);
+
             int shaderPass = 0;
             cmd.SetGlobalTexture(MainTexId, source);
             cmd.GetTemporaryRT(destination, w, h, 0, FilterMode.Point, RenderTextureFormat.Default);
@@ -136,97 +145,7 @@ namespace PSX
             //DrawFullScreen(cmd, m_Material, destination, prop, (int)Pass.FinalImage);
         }
 
-        // Get rendertargets
-        RTStorage GetRTs(Camera camera)
-        {
-            RTStorage RTs;
-            var cameraID = camera.GetInstanceID();
 
-            if (rtStorage.TryGetValue(cameraID, out RTs))
-            {
-                if (RTs.SizeChanged(camera))
-                {
-                    RTs.Reallocate(camera);
-                }
-                else if (RTs.downScaleFactor != dithering.downscaleFactor.value)
-                {
-                    RTs.downScaleFactor = dithering.downscaleFactor.value;
-                    RTs.Reallocate(camera);
-                }
-            }
-            else
-            {
-                RTs = new RTStorage(camera);
-                rtStorage[cameraID] = RTs;
-            }
-
-            return RTs;
-        }
-
-        // RT storage
-        sealed class RTStorage
-        {
-            // Camera base width and height
-            int _baseWidth, _baseHeight;
-
-            int _downscaleFactor = 4;
-            public int downScaleFactor
-            {
-                set { _downscaleFactor = value; }
-                get { return _downscaleFactor; }
-            }
-
-            // Render targets for this effect
-            RTHandle _downsampled;
-            public RTHandle downsampled { get { return _downsampled; } }
-
-
-            public RTStorage(Camera camera)
-            {
-                Allocate(camera);
-            }
-
-
-            // Allocate new RTs
-            void Allocate(Camera camera)
-            {
-                _baseWidth = camera.scaledPixelWidth;
-                _baseHeight = camera.scaledPixelHeight;
-
-                var width = _baseWidth / downScaleFactor;
-                var height = _baseHeight / downScaleFactor;
-
-                const GraphicsFormat rtFormat = GraphicsFormat.R16G16B16A16_SFloat;
-
-                _downsampled = RTHandles.Alloc(width, height, colorFormat: rtFormat);
-            }
-
-
-            // Reallocate RTs
-            public void Reallocate(Camera camera)
-            {
-                Release();
-                Allocate(camera);
-            }
-
-
-            // Release old RTs
-            public void Release()
-            {
-                if (_downsampled != null)
-                    RTHandles.Release(_downsampled);
-            }
-
-
-            // Check if camera size matches
-            public bool SizeChanged(Camera camera)
-            {
-                if (_baseWidth == camera.scaledPixelWidth && _baseHeight == camera.scaledPixelHeight)
-                    return false;
-                else
-                    return true;
-            }
-        }
     }
 
 
