@@ -27,9 +27,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_RendererFeatures:
   - {fileID: 2606515335583478340}
-  - {fileID: 6965443398785072023}
   - {fileID: -1925210268287778290}
-  m_RendererFeatureMap: 
+  m_RendererFeatureMap: 44b20f47e3332c240ec2c510764748e5
   postProcessData: {fileID: 11400000, guid: 41439944d30ece34e96484bdb6645b55, type: 2}
   shaders:
     blitPS: {fileID: 4800000, guid: c17132b1f77d20942aa75f8429c0f8bc, type: 3}
@@ -65,16 +64,3 @@ MonoBehaviour:
   m_Name: Fog
   m_EditorClassIdentifier: 
   m_Active: 0
---- !u!114 &6965443398785072023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df6534dd185a4f18b50629b58de296b6, type: 3}
-  m_Name: Pixelation
-  m_EditorClassIdentifier: 
-  m_Active: 1
