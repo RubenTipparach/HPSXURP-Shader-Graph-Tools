@@ -22,10 +22,10 @@ Some PSX elements can be exagerated using the shader graph. Currently shadergrap
 - Vertex jitter (and reslotion control)
 - Texture scaling + point filtering
 - Emmisive textures + HDR (works with bloom)
+- dithering and pixelation color pallete options
 
 ### Planned features
 - texture affinity
 - static render shader mode
 - more dithering matrices
-- dithering and pixelation color pallete options
 - Terrain (if thats even possible with shader graph or modify it using the shader file?) 
